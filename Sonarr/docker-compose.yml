@@ -1,0 +1,19 @@
+services:
+    sonarr:
+        container_name: sonarr
+        restart: unless-stopped
+        ports:
+            - 8989:8989
+        volumes:
+            - ./config:/config
+            - /mnt/lab_data/tvseries:/tv
+            - /mnt/lab_data/downloads:/downloads
+        environment:
+            - PUID=1000
+            - PGID=1000
+        image: linuxserver/sonarr
+
+networks:
+  default:
+    name: main_net
+    external: true

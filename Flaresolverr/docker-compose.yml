@@ -1,0 +1,16 @@
+services:
+    flaresolverr:
+        image: ghcr.io/flaresolverr/flaresolverr:latest
+        container_name: flaresolverr
+        restart: unless-stopped
+        environment:
+            - LOG_LEVEL=info
+            - LOG_HTML=${LOG_HTML:-false}
+            - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+        ports:
+            - "${PORT:-8191}:8191"
+
+networks:
+  default:
+    name: main_net
+    external: true

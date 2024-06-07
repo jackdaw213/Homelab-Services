@@ -1,0 +1,19 @@
+services:
+    radarr:
+        image: linuxserver/radarr
+        container_name: radarr
+        restart: unless-stopped
+        ports:
+            - 7878:7878
+        volumes:
+            - ./config:/config
+            - /mnt/lab_data/movies:/movies
+            - /mnt/lab_data/downloads:/downloads
+        environment:
+            - PUID=1000
+            - PGID=1000
+
+networks:
+  default:
+    name: main_net
+    external: true

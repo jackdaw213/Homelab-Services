@@ -1,0 +1,22 @@
+services:
+    watchtower:
+        image: containrrr/watchtower
+        container_name: watchtower
+        restart: unless-stopped
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        env_file:
+            - .env
+        environment:
+            - WATCHTOWER_CLEANUP=true
+            - WATCHTOWER_INCLUDE_RESTARTING=true
+            - WATCHTOWER_HTTP_API_METRICS=true
+            - WATCHTOWER_HTTP_API_TOKEN=${API_TOKEN}
+            - WATCHTOWER_POLL_INTERVAL=21600
+        ports:
+            - 8888:8080
+
+networks:
+  default:
+    name: main_net
+    external: true
