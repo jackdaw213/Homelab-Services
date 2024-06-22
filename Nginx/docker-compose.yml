@@ -3,6 +3,7 @@ services:
     image: 'jc21/nginx-proxy-manager:latest'
     container_name: nginx
     restart: unless-stopped
+    network_mode: host
     healthcheck:
       test: ["CMD", "/usr/bin/check-health"]
       interval: 10s
@@ -14,8 +15,3 @@ services:
     volumes:
       - ./config/data:/data
       - ./config/letsencrypt:/etc/letsencrypt
-
-networks:
-  default:
-    name: main_net
-    external: true
