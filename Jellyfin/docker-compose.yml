@@ -6,23 +6,23 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            #- NVIDIA_DRIVER_CAPABILITIES=all
-            #- NVIDIA_VISIBLE_DEVICES=all
+            - NVIDIA_DRIVER_CAPABILITIES=all
+            - NVIDIA_VISIBLE_DEVICES=all
             - JELLYFIN_FFmpeg__probesize=50000000
             - JELLYFIN_FFmpeg__analyzeduration=50000000
-        #runtime: nvidia
+        runtime: nvidia
         volumes:
             - ./config:/config
             - /mnt/lab_data/tvseries:/data/tvshows
             - /mnt/lab_data/movies:/data/movies
         ports:
             - 8096:8096
-        # deploy:
-        #     resources:
-        #         reservations:
-        #             devices:
-        #                 - driver: nvidia
-        #                   capabilities: [gpu]
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          capabilities: [gpu]
 
 networks:
   default:
