@@ -5,7 +5,7 @@ services:
       - PASSWORD=${PASS}
       - PORT=51821
       - WG_PORT=51820
-      - WG_DEFAULT_ADDRESS=10.8.0.1
+      - WG_DEFAULT_ADDRESS=10.8.0.x
       - WG_DEFAULT_DNS=1.1.1.1
       # 1400 or we will get SSL errors when trying to connect to our domain
       # https://www.reddit.com/r/WireGuard/comments/g6whsp/ssh_works_but_https_not/
