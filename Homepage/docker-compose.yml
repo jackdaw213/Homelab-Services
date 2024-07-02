@@ -10,19 +10,8 @@ services:
             - ./config/images:/app/public/images 
             - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
             - /mnt/lab_data:/mnt/lab_data # For monitoring
-    glances:
-        container_name: glances
-        image: nicolargo/glances:latest-full
-        restart: always
-        pid: host
-        ports: 
-            - 61208:61208
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ./config/glances:/etc/glances/
-            - /mnt/lab_data:/mnt/lab_data
-        environment:
-            - "GLANCES_OPT=-w"
+        env_file:
+            - .env
 
 networks:
   default:

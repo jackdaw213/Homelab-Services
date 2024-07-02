@@ -1,0 +1,21 @@
+services:
+    glances:
+        container_name: glances
+        image: nicolargo/glances:latest-full
+        restart: always
+        pid: host
+        network_mode: host
+        ports: 
+            - 61208:61208
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./config/glances:/etc/glances/
+            - /mnt/lab_data:/mnt/lab_data
+        environment:
+            - "GLANCES_OPT=-w"
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          capabilities: [gpu]
