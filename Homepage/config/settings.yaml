@@ -1,0 +1,33 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/settings
+
+title: Homepage
+background:
+    image: /images/bg.jpg
+cardBlur: xl
+theme: dark
+headerStyle: boxedWidgets
+showStats: true
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  showSearchSuggestions: true
+  hideVisitURL: true
+
+providers:
+  openweathermap: {{HOMEPAGE_VAR_WEATHER_KEY}}
+
+layout:
+  Stats:
+    style: row
+    columns: 3
+  Media:
+    style: column
+  Utility:
+    style: column
+  Torrent:
+    style: column
+  Network:
+    style: column

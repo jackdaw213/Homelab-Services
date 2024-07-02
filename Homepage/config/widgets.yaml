@@ -1,0 +1,20 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/widgets
+
+- resources:
+    cpu: true
+    memory: true
+    expanded: true
+    disk:
+        - /
+        - /mnt/lab_data
+
+- search:
+    provider: duckduckgo
+    target: _blank
+
+- weather:
+    latitude: {{HOMEPAGE_VAR_WEATHER_LATITUDE}}
+    longitude: {{HOMEPAGE_VAR_WEATHER_LONGITUDE}}
+    provider: openweathermap
