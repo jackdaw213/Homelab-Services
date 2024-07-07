@@ -11,7 +11,7 @@ services:
         runtime: nvidia
         volumes:
             - ./config:/config
-            - /ramdisk:/config/cache/transcodes
+            - /tmp/jellyfin:/config/cache/transcodes
             - /mnt/lab_data/tvseries:/data/tvshows
             - /mnt/lab_data/movies:/data/movies
         ports:
