@@ -96,6 +96,11 @@
             url: https://portainer:9443
             env: 2
             key: {{HOMEPAGE_VAR_PORTAINER_KEY}}
+    - Crafty:
+        href: https://crafty.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+        description: Minecraft server manager
+        server: local_docker
+        container: crafty_container
     - Watchtower:
         href: https://watchtower.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Auto update containers
