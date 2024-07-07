@@ -8,11 +8,10 @@ services:
             - PGID=1000
             - NVIDIA_DRIVER_CAPABILITIES=all
             - NVIDIA_VISIBLE_DEVICES=all
-            - JELLYFIN_FFmpeg__probesize=50000000
-            - JELLYFIN_FFmpeg__analyzeduration=50000000
         runtime: nvidia
         volumes:
             - ./config:/config
+            - /ramdisk:/config/cache/transcodes
             - /mnt/lab_data/tvseries:/data/tvshows
             - /mnt/lab_data/movies:/data/movies
         ports:
