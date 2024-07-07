@@ -1,0 +1,23 @@
+services:
+  crafty:
+    container_name: crafty_container
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    restart: always
+    environment:
+        - TZ=Australia/Melbourne
+    ports:
+        - "8443:8443" # HTTPS
+        - "8123:8123" # DYNMAP
+        - "19132:19132/udp" # BEDROCK
+        - "25500-25600:25500-25600" # MC SERV PORT RANGE
+    volumes:
+        - ./config/backups:/crafty/backups
+        - ./config/logs:/crafty/logs
+        - ./config/servers:/crafty/servers
+        - ./config/config:/crafty/app/config
+        - ./config/import:/crafty/import
+
+networks:
+  default:
+    name: main_net
+    external: true
