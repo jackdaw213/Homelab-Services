@@ -18,6 +18,8 @@ services:
       - inContainer=true
       - ffmpegVersion=6
       - nodeName=MyInternalNode
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
     volumes:
       - ./config/server:/app/server
       - ./config:/app/configs
@@ -25,6 +27,12 @@ services:
       - /mnt/lab_data/tvseries:/media/tvseries
       - /mnt/lab_data/movies:/media/movies
       - /tmp/tdarr:/temp
+    deploy:
+      resources:
+          reservations:
+              devices:
+                  - driver: nvidia
+                    capabilities: [gpu]
 
   tdarr-node:
     container_name: tdarr-node
@@ -40,12 +48,20 @@ services:
       - serverPort=8266
       - inContainer=true
       - ffmpegVersion=6
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
     volumes:
       - ./config:/app/configs
       - ./config/logs:/app/logs
       - /mnt/lab_data/tvseries:/media/tvseries
       - /mnt/lab_data/movies:/media/movies
       - /tmp/tdarr:/temp
+    deploy:
+      resources:
+          reservations:
+              devices:
+                  - driver: nvidia
+                    capabilities: [gpu]
 
 networks:
   default:
