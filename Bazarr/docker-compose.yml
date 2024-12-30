@@ -1,0 +1,20 @@
+services:
+    bazarr:
+        image: lscr.io/linuxserver/bazarr:latest
+        container_name: bazarr
+        environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Australia/Melbourne
+        volumes:
+        - ./config:/config
+        - /mnt/lab_data/tvseries:/tv
+        - /mnt/lab_data/movies:/movies
+        ports:
+        - 6767:6767
+        restart: unless-stopped
+
+networks:
+  default:
+    name: main_net
+    external: true
