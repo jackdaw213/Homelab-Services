@@ -9,8 +9,9 @@
         container: immich_server
         widget:
             type: immich
-            url: http://immich_server:3001
+            url: http://immich_server:2283
             key: {{HOMEPAGE_VAR_IMMICH_KEY}}
+            version: 2
     - Radarr:
         href: https://radarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}
         description: Movie tracking
