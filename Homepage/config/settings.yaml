@@ -16,9 +16,6 @@ quicklaunch:
   showSearchSuggestions: true
   hideVisitURL: true
 
-providers:
-  openweathermap: {{HOMEPAGE_VAR_WEATHER_KEY}}
-
 layout:
   Stats:
     style: row

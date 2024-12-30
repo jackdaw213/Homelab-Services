@@ -14,7 +14,13 @@
     provider: duckduckgo
     target: _blank
 
-- weather:
+- openweathermap:
+    label: Melbourne
     latitude: {{HOMEPAGE_VAR_WEATHER_LATITUDE}}
     longitude: {{HOMEPAGE_VAR_WEATHER_LONGITUDE}}
+    units: metric 
     provider: openweathermap
+    apiKey: {{HOMEPAGE_VAR_WEATHER_KEY}} 
+    cache: 5 # Time in minutes to cache API responses, to stay within limits
+    format: # optional, Intl.NumberFormat options
+      maximumFractionDigits: 1
