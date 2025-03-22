@@ -1,0 +1,69 @@
+services:
+  tubearchivist:
+    container_name: tubearchivist
+    restart: unless-stopped
+    image: bbilly1/tubearchivist
+    ports:
+      - 8751:8000
+    volumes:
+      - /mnt/lab_data/TubeArchivist/media:/youtube
+      - /mnt/lab_data/TubeArchivist/cache:/cache
+    env_file:
+      - .env
+    environment:
+      - ES_URL=http://archivist-es:9200     # needs protocol e.g. http and port
+      - REDIS_HOST=archivist-redis          # don't add protocol
+      - HOST_UID=1000
+      - HOST_GID=1000
+      - TA_HOST=https://tubearchivist.jackdawmd.duckdns.org/         # set your host name
+      - TA_USERNAME=${USER}           # your initial TA credentials
+      - TA_PASSWORD=${PASS}              # your initial TA credentials
+      - ELASTIC_PASSWORD=${PASS}         # set password for Elasticsearch
+      - TZ=Australia/Melbourne                 # set your time zone
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 2m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      - archivist-es
+      - archivist-redis
+  archivist-redis:
+    image: redis/redis-stack-server
+    container_name: archivist-redis
+    restart: unless-stopped
+    expose:
+      - "6379"
+    volumes:
+      - redis:/data
+    depends_on:
+      - archivist-es
+  archivist-es:
+    image: bbilly1/tubearchivist-es         # only for amd64, or use official es 8.16.0
+    container_name: archivist-es
+    restart: unless-stopped
+    environment:
+      - "ELASTIC_PASSWORD=${PASS}"       # matching Elasticsearch password
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "xpack.security.enabled=true"
+      - "discovery.type=single-node"
+      - "path.repo=/usr/share/elasticsearch/data/snapshot"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./config/es:/usr/share/elasticsearch/data    # check for permission error when using bind mount, see readme
+    env_file:
+      - .env
+    expose:
+      - "9200"
+
+volumes:
+  redis:
+
+networks:
+  default:
+    name: main_net
+    external: true
