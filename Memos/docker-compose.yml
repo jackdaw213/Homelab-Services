@@ -1,0 +1,14 @@
+services:
+  memos:
+    container_name: memos
+    image: neosmemo/memos:stable
+    restart: unless-stopped
+    ports:
+      - "5230:5230"
+    volumes:
+      - ./config/memos:/var/opt/memos
+
+networks:
+  default:
+    name: main_net
+    external: true
