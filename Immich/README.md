@@ -9,4 +9,4 @@ Click on your profile pic on the top right corner -> Administration -> Settings
         - Turn on "Hardware decoding" and "Temporal AQ"
 3. Machine Learning Settings
     - Smart Search
-        - CLIP model -> immich-app/XLM-Roberta-Large-ViT-H-14__frozen_laion5b_s13b_b90k (for multilingual)
+        - CLIP model -> ViT-SO400M-16-SigLIP2-384__webli (for multilingual)
