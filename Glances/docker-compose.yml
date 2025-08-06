@@ -13,9 +13,9 @@ services:
             - /mnt/lab_data:/mnt/lab_data
         environment:
             - "GLANCES_OPT=-w"
-        deploy:
-            resources:
-                reservations:
-                    devices:
-                        - driver: nvidia
-                          capabilities: [gpu]
+        # deploy:
+        #     resources:
+        #         reservations:
+        #             devices:
+        #                 - driver: nvidia
+        #                   capabilities: [gpu]
