@@ -1,4 +1,5 @@
 **/.env
 **/config/
 
-!Homepage/config
+!Homepage/configSeafile/.env
+Seafile/data/

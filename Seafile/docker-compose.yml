@@ -1,0 +1,61 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: seafile-mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${INIT_SEAFILE_MYSQL_ROOT_PASSWORD}
+      - MYSQL_LOG_CONSOLE=true
+    volumes:
+      - /mnt/lab_data/Seafile/mysql-db:/var/lib/mysql
+    networks:
+      - seafile-net
+
+  memcached:
+    image: memcached:1.6
+    container_name: seafile-memcached
+    restart: unless-stopped
+    entrypoint: memcached -m 256
+    networks:
+      - seafile-net
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: seafile-redis
+    restart: unless-stopped
+    networks:
+      - seafile-net
+
+  seafile:
+    image: seafileltd/seafile-mc:14.0.9
+    container_name: seafile
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    volumes:
+      # host CA store: OpenSSL reads both the bundle and the per-cert files
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
+      - /mnt/lab_data/Seafile/data:/shared
+    environment:
+      - SEAFILE_MYSQL_DB_HOST=db
+      - SEAFILE_MYSQL_DB_PORT=3306
+      - SEAFILE_MYSQL_DB_USER=seafile
+      - SEAFILE_MYSQL_DB_PASSWORD=${SEAFILE_MYSQL_DB_PASSWORD}
+      - INIT_SEAFILE_MYSQL_ROOT_PASSWORD=${INIT_SEAFILE_MYSQL_ROOT_PASSWORD}
+      - SEAFILE_SERVER_HOSTNAME=seafile.jackdawmd.duckdns.org
+      - SEAFILE_SERVER_LETSENCRYPT=false
+      - SEAFILE_SERVER_PROTOCOL=https
+      - TIME_ZONE=Australia/Melbourne
+      - INIT_SEAFILE_ADMIN_EMAIL=${SEAFILE_ADMIN_EMAIL}
+      - INIT_SEAFILE_ADMIN_PASSWORD=${SEAFILE_ADMIN_PASSWORD}
+    depends_on:
+      - db
+      - memcached
+      - redis
+    networks:
+      - seafile-net
+
+networks:
+  seafile-net:
+    name: seafile-net
