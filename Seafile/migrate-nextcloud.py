@@ -18,6 +18,7 @@ Example (inside the container):
 """
 import argparse
 import os
+import subprocess
 import sys
 import time
 
@@ -66,16 +67,21 @@ def mkdir(sess, base, repo, path):
 
 
 def upload(sess, base, repo, parent, local_path, name):
+    """Stream one file with curl.
+
+    requests buffers a multipart body in memory, which the OOM killer ended
+    during an 18.7 GB file. curl reads from disk and keeps memory flat.
+    """
     link = sess.get(base + "/api2/repos/%s/upload-link/?p=%s" % (repo, parent),
                     timeout=120).json()
     link = link.replace(PUBLIC_PREFIX, LOCAL_PREFIX)
-    with open(local_path, "rb") as fh:
-        r = requests.post(link, files={"file": (name, fh)},
-                          data={"parent_dir": parent}, timeout=24 * 3600)
-    if r.status_code != 200:
-        raise RuntimeError("upload of %s failed: %s %s"
-                           % (local_path, r.status_code, r.text[:200]))
-    return r.text.strip()
+    cmd = ["curl", "-sS", "--fail", "--max-time", "0", "-X", "POST", link,
+           "-F", "parent_dir=" + parent, "-F", "file=@" + local_path]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode != 0:
+        raise RuntimeError("upload of %s failed: rc=%s %s"
+                           % (local_path, res.returncode, res.stderr[:200]))
+    return res.stdout.strip()
 
 
 def walk(sess, base, repo, source, remote_dir, stats):
