@@ -37,6 +37,7 @@ services:
       - /etc/ssl/certs:/etc/ssl/certs:ro
       - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
       - /mnt/lab_data/Seafile/data:/shared
+      - /mnt/lab_data/Nextcloud:/nc:ro   # temporary: Nextcloud migration source
     environment:
       - SEAFILE_MYSQL_DB_HOST=db
       - SEAFILE_MYSQL_DB_PORT=3306
