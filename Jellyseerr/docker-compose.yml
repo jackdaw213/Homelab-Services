@@ -1,15 +1,17 @@
 services:
-    jellyseerr:
-       image: fallenbagel/jellyseerr:latest
-       container_name: jellyseerr            
+    seerr:
+       image: ghcr.io/seerr-team/seerr:v3.5.1
+       container_name: seerr
+       init: true          # required: the image has no init
        environment:
-            - PUID=1000
-            - PGID=1000
             - LOG_LEVEL=debug
             - TZ=Australia/Melbourne
        ports:
             - 5055:5055
        volumes:
+            # host CA store: OpenSSL reads both the bundle and the per-cert files
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
             - ./config:/app/config
        restart: unless-stopped
 

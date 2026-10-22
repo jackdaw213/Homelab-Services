@@ -6,6 +6,9 @@ services:
     ports:
       - 8751:8000
     volumes:
+      # host CA store: OpenSSL reads both the bundle and the per-cert files
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
       - /mnt/lab_data/TubeArchivist/media:/youtube
       - /mnt/lab_data/TubeArchivist/cache:/cache
     env_file:
@@ -18,7 +21,7 @@ services:
       - TA_HOST=https://tubearchivist.jackdawmd.duckdns.org/         # set your host name
       - TA_USERNAME=${USER}           # your initial TA credentials
       - TA_PASSWORD=${PASS}              # your initial TA credentials
-      - ELASTIC_PASSWORD=${PASS}         # set password for Elasticsearch
+      - ELASTIC_PASSWORD=${PASS}         # matching Elasticsearch password
       - TZ=Australia/Melbourne                 # set your time zone
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -54,6 +57,9 @@ services:
         soft: -1
         hard: -1
     volumes:
+      # host CA store: OpenSSL reads both the bundle and the per-cert files
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
       - ./config/es:/usr/share/elasticsearch/data    # check for permission error when using bind mount, see readme
     env_file:
       - .env

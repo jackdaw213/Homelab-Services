@@ -1,7 +1,7 @@
 services:
   tdarr:
     container_name: tdarr
-    image: ghcr.io/haveagitgat/tdarr:latest
+    image: ghcr.io/haveagitgat/tdarr:3.01.00
     restart: unless-stopped
     ports:
       - 8265:8265 # webUI port
@@ -18,25 +18,28 @@ services:
       - inContainer=true
       - ffmpegVersion=6
       - nodeName=MyInternalNode
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - NVIDIA_VISIBLE_DEVICES=all
+      # - NVIDIA_DRIVER_CAPABILITIES=all
+      # - NVIDIA_VISIBLE_DEVICES=all
     volumes:
+      # host CA store: OpenSSL reads both the bundle and the per-cert files
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
       - ./config/server:/app/server
       - ./config:/app/configs
       - ./config/logs:/app/logs
       - /mnt/lab_data/tvseries:/media/tvseries
       - /mnt/lab_data/movies:/media/movies
       - /tmp/tdarr:/temp
-    deploy:
-      resources:
-          reservations:
-              devices:
-                  - driver: nvidia
-                    capabilities: [gpu]
+    # deploy:
+    #   resources:
+    #       reservations:
+    #           devices:
+    #               - driver: nvidia
+    #                 capabilities: [gpu]
 
   tdarr-node:
     container_name: tdarr-node
-    image: ghcr.io/haveagitgat/tdarr_node:latest
+    image: ghcr.io/haveagitgat/tdarr_node:3.01.00
     restart: unless-stopped
     environment:
       - TZ=Australia/Melbourne
@@ -48,20 +51,23 @@ services:
       - serverPort=8266
       - inContainer=true
       - ffmpegVersion=6
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - NVIDIA_VISIBLE_DEVICES=all
+      # - NVIDIA_DRIVER_CAPABILITIES=all
+      # - NVIDIA_VISIBLE_DEVICES=all
     volumes:
+      # host CA store: OpenSSL reads both the bundle and the per-cert files
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
       - ./config:/app/configs
       - ./config/logs:/app/logs
       - /mnt/lab_data/tvseries:/media/tvseries
       - /mnt/lab_data/movies:/media/movies
       - /tmp/tdarr:/temp
-    deploy:
-      resources:
-          reservations:
-              devices:
-                  - driver: nvidia
-                    capabilities: [gpu]
+    # deploy:
+    #   resources:
+    #       reservations:
+    #           devices:
+    #               - driver: nvidia
+    #                 capabilities: [gpu]
 
 networks:
   default:

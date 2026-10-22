@@ -7,6 +7,10 @@ services:
             - LOG_LEVEL=info
             - LOG_HTML=${LOG_HTML:-false}
             - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+        volumes:
+            # host CA store: chrome/curl read the system bundle
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
         ports:
             - "${PORT:-8191}:8191"
 

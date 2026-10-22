@@ -8,14 +8,17 @@ services:
         ports: 
             - 61208:61208
         volumes:
+            # host CA store: OpenSSL reads both the bundle and the per-cert files
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
             - /var/run/docker.sock:/var/run/docker.sock
             - ./config/glances:/etc/glances/
             - /mnt/lab_data:/mnt/lab_data
         environment:
             - "GLANCES_OPT=-w"
-        deploy:
-            resources:
-                reservations:
-                    devices:
-                        - driver: nvidia
-                          capabilities: [gpu]
+        # deploy:
+        #     resources:
+        #         reservations:
+        #             devices:
+        #                 - driver: nvidia
+        #                   capabilities: [gpu]

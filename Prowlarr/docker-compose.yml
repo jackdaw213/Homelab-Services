@@ -7,6 +7,9 @@ services:
             - PUID=1000
             - PGID=1000
         volumes:
+            # host CA store: OpenSSL reads both the bundle and the per-cert files
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
             - ./config:/config
         ports:
             - 9696:9696

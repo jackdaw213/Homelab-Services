@@ -6,10 +6,14 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - NVIDIA_DRIVER_CAPABILITIES=all
-            - NVIDIA_VISIBLE_DEVICES=all
-        runtime: nvidia
+            - DOCKER_MODS=linuxserver/mods:jellyfin-opencl-intel
+        #     - NVIDIA_DRIVER_CAPABILITIES=all
+        #     - NVIDIA_VISIBLE_DEVICES=all
+        # runtime: nvidia
         volumes:
+            # host CA store: OpenSSL reads both the bundle and the per-cert files
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
             - ./config:/config
             - /tmp/jellyfin:/config/cache/transcodes
             - /mnt/lab_data/tvseries:/data/tvshows
@@ -17,13 +21,15 @@ services:
             - /mnt/lab_data/TubeArchivist/media:/data/youtube:ro
         ports:
             - 8096:8096
-        deploy:
-            resources:
-                reservations:
-                    devices:
-                        - driver: nvidia
-                          count: 1
-                          capabilities: [gpu]
+        devices:
+            - /dev/dri:/dev/dri
+        # deploy:
+        #     resources:
+        #         reservations:
+        #             devices:
+        #                 - driver: nvidia
+        #                   count: 1
+        #                   capabilities: [gpu]
 
 networks:
   default:

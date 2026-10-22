@@ -7,6 +7,9 @@ services:
         - PGID=1000
         - TZ=Australia/Melbourne
         volumes:
+        # host CA store: OpenSSL reads both the bundle and the per-cert files
+        - /etc/ssl/certs:/etc/ssl/certs:ro
+        - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
         - ./config:/config
         - /mnt/lab_data/tvseries:/tv
         - /mnt/lab_data/movies:/movies

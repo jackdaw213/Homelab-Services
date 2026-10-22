@@ -9,7 +9,7 @@ subfolders=$(find . -type f -name "docker-compose.yml" -exec dirname {} \;)
 # Iterate over each subfolder and start docker-compose
 for folder in $subfolders; do
     echo "Starting docker-compose in $folder"
-    (cd "$folder" && docker-compose up -d)
+    (cd "$folder" && docker compose up -d)
 done
 
 docker exec -it --env START_CONTAINERS=1 nextcloud-aio-mastercontainer /daily-backup.sh

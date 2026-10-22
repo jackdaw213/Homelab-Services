@@ -6,6 +6,9 @@ services:
         security_opt:
             - no-new-privileges:true
         volumes:
+            # host CA store: the image has no store of its own
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /mnt/lab_data/portainer-data:/data

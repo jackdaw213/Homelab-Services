@@ -6,6 +6,9 @@ services:
         ports:
             - 7878:7878
         volumes:
+            # host CA store: OpenSSL reads both the bundle and the per-cert files
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
             - ./config:/config
             - /mnt/lab_data/movies:/movies
             - /mnt/lab_data/downloads:/downloads

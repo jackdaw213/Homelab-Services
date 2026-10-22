@@ -11,6 +11,9 @@ services:
         - "19132:19132/udp" # BEDROCK
         - "25500-25600:25500-25600" # MC SERV PORT RANGE
     volumes:
+        # host CA store: OpenSSL reads both the bundle and the per-cert files
+        - /etc/ssl/certs:/etc/ssl/certs:ro
+        - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
         - ./config/backups:/crafty/backups
         - ./config/logs:/crafty/logs
         - ./config/servers:/crafty/servers

@@ -6,6 +6,9 @@ services:
     ports:
       - "5230:5230"
     volumes:
+      # host CA store: OpenSSL reads both the bundle and the per-cert files
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
       - ./config/memos:/var/opt/memos
 
 networks:
