@@ -12,5 +12,3 @@ for folder in $subfolders; do
     (cd "$folder" && docker compose up -d)
 done
 
-docker exec -it --env START_CONTAINERS=1 nextcloud-aio-mastercontainer /daily-backup.sh
-
