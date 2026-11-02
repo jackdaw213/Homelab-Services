@@ -47,3 +47,11 @@ cp ./data/db_*.sqlite3 /mnt/lab_data/vaultwarden-backups/
 Restore: stop the container, rename the snapshot to `db.sqlite3` in `./data`,
 delete any stale `db.sqlite3-wal`, start the container. Attachments and `sends`
 live in `./data` too — back the whole folder up if you use attachments.
+
+## Bulk URI match fix
+
+`set-host-match.mjs` sets URI match detection = Host on every item under
+`*.jackdawmd.duckdns.org` (stops one subdomain offering another subdomain's
+logins). When adding a new service you can instead just set Match detection →
+Host by hand (gear icon next to the URI field). Run the script after a `bw login`:
+see the usage comment at the top of the file.
