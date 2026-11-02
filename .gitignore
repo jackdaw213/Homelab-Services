@@ -1,5 +1,6 @@
 **/.env
 **/config/
+Vaultwarden/data/
 
 !Homepage/configSeafile/.env
 Seafile/data/

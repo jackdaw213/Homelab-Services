@@ -1,0 +1,25 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "8222:80"
+    environment:
+      - DOMAIN=https://vaultwarden.jackdawmd.duckdns.org
+      - SIGNUPS_ALLOWED=true   # flip to false after your account exists (see README)
+      - ADMIN_TOKEN=${VAULTWARDEN_ADMIN_TOKEN}
+      - TZ=Australia/Melbourne
+    volumes:
+      # host CA store: outbound HTTPS (favicon fetch, SMTP) validates against it
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - /etc/ca-certificates/extracted:/etc/ca-certificates/extracted:ro
+      # local disk on purpose: SQLite over NFS (lab_data) risks corruption
+      - ./data:/data
+
+networks:
+  default:
+    name: main_net
+    external: true
